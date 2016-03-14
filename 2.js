@@ -21,11 +21,14 @@
     render: function(){
       $(this.el).append("<button id='add'>Add list item</button>");
       $(this.el).append("<ul></ul>");
+      $('ul', this.el).append("<li>hello world-0</li>");
     },
     // `addItem()`: Custom function called via `click` event above.
     addItem: function(){
       this.counter++;
-      $('ul', this.el).append("<li>hello world"+this.counter+"</li>");
+      // delegation jQuery
+      $('ul', this.el).append("<li>hello world-"+this.counter+"</li>");
+
     }
   });
 

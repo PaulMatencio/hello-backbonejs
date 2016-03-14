@@ -17,39 +17,47 @@
   });
 
   // **ItemView class**: Responsible for rendering each individual `Item`.
+  // This is new class compared the 3.js
   var ItemView = Backbone.View.extend({
     tagName: 'li', // name of (orphan) root tag in this.el
+
     initialize: function(){
       _.bindAll(this, 'render'); // every function that uses 'this' as the current object should be in here
     },
+
     render: function(){
-      $(this.el).html('<span>'+this.model.get('part1')+' '+this.model.get('part2')+'</span>');
+      $(this.el).html('<span>'+this.model.get('part1') + ' ' + this.model.get('part2')+'</span>');
       return this; // for chainable calls, like .render().el
     }
   });
 
+
   var ListView = Backbone.View.extend({
     el: $('body'), // el attaches to existing element
     events: {
-      'click button#add': 'addItem'
+      'click button#addItem': 'addItem'
     },
+
     initialize: function(){
       _.bindAll(this, 'render', 'addItem', 'appendItem'); // every function that uses 'this' as the current object should be in here
 
       this.collection = new List();
+      // appendItem() is called when an Item is added to the collection
       this.collection.bind('add', this.appendItem); // collection event binder
 
       this.counter = 0;
       this.render();
     },
+
     render: function(){
       var self = this;
-      $(this.el).append("<button id='add'>Add list item</button>");
+      $(this.el).append("<button id='addItem'>Add list item</button>");
       $(this.el).append("<ul></ul>");
       _(this.collection.models).each(function(item){ // in case collection is not empty
         self.appendItem(item);
       }, this);
     },
+
     addItem: function(){
       this.counter++;
       var item = new Item();
@@ -58,6 +66,7 @@
       });
       this.collection.add(item);
     },
+
     // `appendItem()` is no longer responsible for rendering an individual `Item`. This is now delegated to the `render()` method of each `ItemView` instance.
     appendItem: function(item){
       var itemView = new ItemView({
